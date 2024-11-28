@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "role-permission-test-collection",
+		"name": "Role-Based Permission Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register Users",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"super_admin_test\",\n    \"email\": \"super_admin@test.com\",\n    \"password\": \"SuperAdminPass123!\",\n    \"role\": \"1\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": ["http://localhost:3000/api"],
+							"path": ["auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login Super Admin",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"super_admin@test.com\",\n    \"password\": \"SuperAdminPass123!\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": ["http://localhost:3000/api"],
+							"path": ["auth", "login"]
+						},
+						"event": [
+							{
+								"listen": "test",
+								"script": {
+									"exec": [
+										"var jsonData = pm.response.json();",
+										"pm.environment.set(\"super_admin_token\", jsonData.token);"
+									],
+									"type": "text/javascript"
+								}
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get All Users (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": ["http://localhost:3000/api"],
+							"path": ["users"]
+						}
+					}
+				},
+				{
+					"name": "Get Specific User (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["users", "{{user_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Update User (Super Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n       \"email\": \"updated@test.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["users", "{{user_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete User (Super Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["users", "{{user_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Resource Management",
+			"item": [
+				{
+					"name": "Create Resource (Super Admin)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Test Resource\",\n    \"description\": \"A test resource for permission checks\",\n    \"type\": \"PROJECT\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/resources",
+							"host": ["http://localhost:3000/api"],
+							"path": ["resources"]
+						}
+					}
+				},
+				{
+					"name": "Get All Resources (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/resources",
+							"host": ["http://localhost:3000/api"],
+							"path": ["resources"]
+						}
+					}
+				},
+				{
+					"name": "Get Specific Resource (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/resources/{{resource_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["resources", "{{resource_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Update Resource (Super Admin)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"title\": \"Updated Resource\",\n    \"description\": \"Updated description\",\n    \"type\": \"DOCUMENT\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/resources/{{resource_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["resources", "{{resource_id}}"]
+						}
+					}
+				},
+				{
+					"name": "Delete Resource (Super Admin)",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/resources/{{resource_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["resources", "{{resource_id}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Role Management",
+			"item": [
+				{
+					"name": "Get All Roles (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/roles",
+							"host": ["http://localhost:3000/api"],
+							"path": ["roles"]
+						}
+					}
+				},
+				{
+					"name": "Get Specific Role (Super Admin)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{super_admin_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/roles/{{role_id}}",
+							"host": ["http://localhost:3000/api"],
+							"path": ["roles", "{{role_id}}"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api"
+		},
+		{
+			"key": "user_id",
+			"value": "1"
+		},
+		{
+			"key": "resource_id",
+			"value": "1"
+		},
+		{
+			"key": "role_id",
+			"value": "1"
+		}
+	]
+}
