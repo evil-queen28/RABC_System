@@ -58,7 +58,7 @@ Available Permissions:
 ### Create Environment File
 Create a `.env` file in the root directory with the following configurations:
 ### MongoDB Connection
-MONGODB_URI=mongodb+srv://db_username:<db_password>@cluster0.sxzx4.mongodb.net/
+MONGODB_URI=`mongodb+srv://db_username:<db_password>@cluster0.sxzx4.mongodb.net/`
 ### JWT Configuration
 - JWT_SECRET=`your_jwt_secret_key`
 - JWT_EXPIRATION=1h
